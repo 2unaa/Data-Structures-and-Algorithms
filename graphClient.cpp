@@ -58,9 +58,9 @@ int main()
       g2.DFT(0);
 
        //You don't need to make Dijkstra's algo for homework on graph - part 1
-      /*cout << "\nDijkstra's algo: " << endl;
+      cout << "\nDijkstra's algo: " << endl;
       g2.DijkstraShortestPath(3);
-      */
+      
     }
   fin.close();
   cout << endl;                                                                                                   
