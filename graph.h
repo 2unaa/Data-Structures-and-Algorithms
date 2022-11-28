@@ -4,7 +4,7 @@ CS311
 
 Your name: Tuan Tran
 Your programmer number: 38
-Hours spent: 9
+Hours spent: 20
 Any difficulties?:
 *****************************/
 #ifndef GRAPH_H
@@ -12,6 +12,8 @@ Any difficulties?:
 #include <iostream>
 #include <queue>
 #include <list>
+#include <stack>
+#include "minHeap-graph.h"
 
 using namespace std;
 
@@ -36,9 +38,9 @@ class graph
   graph(int V);
   ~graph();
   void addEdge(int v, int u, int w=1);  //If the weight is not given, 1 is used for wt.
-
   void BFT(int start);
   void DFT(int start);
+  void DijkstraShortestPath(int start);
 };
 
 //constructor: num is the number of vertices
@@ -205,5 +207,108 @@ void graph::BFT(int start)
   
   delete[] num;  //Don't forget to destroy the dynamic array if you used one
 }
+
+
+//dijkstra's algorithm calculates the shortest distance from start to every other vertex
+//This stand alone function shows the shortest path from start to destination in the following format.
+//  The shortest path from 3 to 5 is 3 0 4 5
+//  The distance is 8
+
+void showShortestDistance(int* curDist, int* predecessor, int start)
+{
+  int dest; //destination
+  cout << "Enter the destination: ";
+  cin >> dest;
+
+  //trace the shortest path from dest back to start
+  stack<int> s; //I suggest you use either library's stack or queue. Which one will work?
+
+  int current = curDist[dest]; //get the distance
+  cout << "The shortest path from " << start << " to " << dest << " is ";
+  while(dest!=start) //as long as dest isnt start
+    {
+      s.push(dest); //push the element 
+      dest = predecessor[dest];
+    }
+  s.push(start); //push the start into stack
+  while(!s.empty())
+    {
+      cout << s.top() << " "; //display top
+      s.pop(); //pop
+    }
+
+  cout << "\nThe distance is " << current << endl;
+}
+
+//You don't need to change the following function.
+//This function is for checking the heap and all the arrays. You may want to call it while you are developing Dijkstra's function
+//This is not part of the graph class.  It is made for testing anyway.
+
+void printHeapArrays(const minHeap<int>& h, int* curDist, int* locator, int* predecessor, int num_ver)
+{
+  cout << "heap ------" << endl;
+  cout << h << endl;  //This works if you made operator<<() to display a heap
+
+  cout << "locator ------" << endl;
+  for(int i = 0; i < num_ver; i++)
+    cout << locator[i] << " ";
+  cout << endl;
+
+  cout << "curDist ------- " << endl;
+  for(int i = 0; i < num_ver; i++)
+    cout << curDist[i] << " ";
+  cout << endl << endl;
+
+  cout << "Predecessor ------- " << endl;
+  for(int i = 0; i < num_ver; i++)
+    cout << predecessor[i] << " ";
+  cout << endl << endl;
+}
+
+void graph::DijkstraShortestPath(int start)
+{
+  minHeap<int> toBeChecked(num_ver); //the top of this heap has the vertex with the shortest distance
+  int *curDist = new int[num_ver];  //contains the current shortest distance from start to every other vertex
+  int *predecessor= new int[num_ver]; //contains the predecessor of each vertex
+  int *locator = new int[num_ver]; //tells where each vertex exists within the heap. e.g. heap [v3, v1, v2, v4, v0] locator [4, 1, 2, 0, 3] <== vertext 0 can be found at index 4 in heap, vertex 3 can be found at index 0 in heap
+  int v = start;
+    //The algorithm is in my lecture notes. Make sure you understand how each array and heap changes by reading my homework document posted on Canvas.
+
+  for(int i = 0; i < num_ver; i++)//initialize each array
+    curDist[i] = 999;   //curDist should be 999 for all vertices to start with
+  for(int i = 0; i < num_ver; i++)//populate toBeChecked heap
+    {
+      toBeChecked.insert(curDist, locator, i); //insert all vetices into toBeChecked heap: [0, 1, 2, 3, 4, ...] the numbers are vertex numbers
+      locator[i] = i;
+      predecessor[i] = -1;
+  }
+  curDist[start] = 0; //set curDist to 0 first
+  //A lof of code here - check the algorithm in my lecture notes
+  while(toBeChecked.getNum()>0) //while its not empty
+    {
+      //printHeapArrays(toBeChecked, curDist, locator, predecessor, num_ver);  //print the heap array
+      toBeChecked.fixHeap(curDist, locator, locator[v]); //fix heap 
+      v = toBeChecked.getMin(curDist, locator); //v = vertex to beChecked with minimum currDist
+      for(list<edge*>::iterator u = ver_ar[v].begin(); u != ver_ar[v].end(); u++) //for all vertices
+	{
+	  if(locator[(*u)->neighbor] < toBeChecked.getNum()) //if neighbor is less than the one to be checked
+	    {
+	      if(curDist[(*u)->neighbor] > ((*u)->wt+curDist[v])) //if neighbor is greater than wt and distance
+		{
+		  curDist[(*u)->neighbor] = ((*u)->wt+curDist[v]); //neighbor to wt + distance of v
+		  predecessor[(*u)->neighbor] = v; //predecessor to v
+		  toBeChecked.fixHeap(curDist, locator, locator[(*u)->neighbor]); //fix the heap
+		}
+	    }
+	}
+    }
+    //Now currDist and predecessor have the info about the shortest distance from start to every other vertex and the predecessor of each vertex
+    showShortestDistance(curDist, predecessor, start);//print the result
+    //delete all the arrays
+    delete[] curDist;
+    delete[] predecessor;
+    delete[] locator;
+}
+
 
 #endif
