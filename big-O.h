@@ -47,9 +47,9 @@ int algoB(const int a[], int sz)
   for(int j = 0; j < sz - 1; j++) //gets current spot
     {
     sum = 0;
-    for(int k = j; k < sz - 1; k++) //goes through the sub array
+    for(int k = j; k < sz; k++) //goes through the sub array
       {
-	sum += a[k + 1]; //add the elements
+	sum += a[k]; //add the elements
 	if(sum > maxSum) //if sum is greater than the max
 	  {
 	  maxSum = sum; //the sum is now the max
