@@ -203,21 +203,14 @@ Stack<T>& Stack<T>::operator=(const Stack& rhs) //rhs = right hand side of the o
 template <class T>
 void Stack<T>::copy(const Stack& source) //source is the stack object copied from. 
 {
-  if(source.empty())//if source is empty
-    {
-      this->top = NULL;//lhs null
-    }
-  else
+  if(!source.empty())//if source is empty
     {
       Node<T>* s = source.top; //make a node point to source top
       Node<T>* p = new Node<T>(s->elem); //make a node to point to a new node with elem
       this->top=p; //copy stack to p
-
+      s=s->next; //increment s 
       while(s!=NULL) //while s is not empty
 	{
-	  s=s->next; //increment s 
-	  if(s!=NULL) //if s is not null
-	    {
 	      p->next=new Node<T>(s->elem); 
 	      p=p->next; //increment p
 	    }
