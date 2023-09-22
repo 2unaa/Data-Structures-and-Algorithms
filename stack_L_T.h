@@ -208,9 +208,9 @@ void Stack<T>::copy(const Stack& source) //source is the stack object copied fro
       Node<T>* s = source.top; //make a node point to source top
       Node<T>* p = new Node<T>(s->elem); //make a node to point to a new node with elem
       this->top=p; //copy stack to p
-      s=s->next; //increment s 
       while(s!=NULL) //while s is not empty
 	{
+        s=s->next; //increment s 
 	      p->next=new Node<T>(s->elem); 
 	      p=p->next; //increment p
 	    }
