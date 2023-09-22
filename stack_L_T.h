@@ -82,12 +82,9 @@ void Stack<T>::pop()
     {
       throw Underflow();
     }
-  else
-    {
       Node<T>* p = top; //make a pointer point to top
       top = top -> next; // become the new top, the 2nd one
       delete p; //delete the old top
-    }
   //What do you do if the stack is empty?
 
 }
@@ -101,11 +98,9 @@ T& Stack<T>::getTop()
     {
       throw Underflow();
     }
-  else
-    {
   //What do you do if the stack is empty?
   return top -> elem; //return the top element. Since the return type is T&, the client can change the top.
-    }
+
 }
 
 
@@ -118,11 +113,9 @@ const T& Stack<T>::getTop() const
     {
       throw Underflow();
     }
-  else
-    {
+  
   //What do you do if the stack is empty?
   return top -> elem; // same as the getTop() above. We need to provide this so a const object can call getTop(). Recall a const object can only call const member functions.
-    }
 }
 
 
@@ -210,7 +203,7 @@ void Stack<T>::copy(const Stack& source) //source is the stack object copied fro
       this->top=p; //copy stack to p
       while(s!=NULL) //while s is not empty
 	{
-          s=s->next; //increment s 
+        s=s->next; //increment s 
 	      p->next=new Node<T>(s->elem); 
 	      p=p->next; //increment p
 	    }
