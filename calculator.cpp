@@ -120,7 +120,7 @@ string infixToPost(const string expr)
     }
   return postfix; //return the postfix expression
 }
-
+//pop right to left
 //evaluating the postfix expression and getting the answer
 double evaluation(const string postfix)
 {
