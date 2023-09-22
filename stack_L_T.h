@@ -210,7 +210,7 @@ void Stack<T>::copy(const Stack& source) //source is the stack object copied fro
       this->top=p; //copy stack to p
       while(s!=NULL) //while s is not empty
 	{
-        s=s->next; //increment s 
+          s=s->next; //increment s 
 	      p->next=new Node<T>(s->elem); 
 	      p=p->next; //increment p
 	    }
