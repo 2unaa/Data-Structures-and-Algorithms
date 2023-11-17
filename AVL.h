@@ -231,7 +231,7 @@ Node<T>* AVL<T>::rightRotation(Node<T>* P)
   P->left = temp; //root left equal to temp
   //calculate BF
   P->BF = getMaxLength(P->left) - getMaxLength(P->right);
-  l->BF = getMaxLength(P->left) - getMaxLength(P->right);
+  l->BF = getMaxLength(l->left) - getMaxLength(l->right);
   
   return l;//returns the rotation of the right
 }
@@ -251,7 +251,7 @@ Node<T>* AVL<T>::leftRotation(Node<T>* P)
   P->right = temp; //root right equal to temp
   //calculate BF
   P->BF = getMaxLength(P->left) - getMaxLength(P->right);
-  r->BF = getMaxLength(P->left) - getMaxLength(P->right);
+  r->BF = getMaxLength(r->left) - getMaxLength(r->right);
 
   return r;//returns the rotation of the left
 }
