@@ -83,7 +83,7 @@ void stableSort(person ar[], bool(&func)(person, person))
     {
       int right = i;
       int left = i-1;
-      while(func(ar[right], ar[left]) && right > 0)//call the function, while right is greater than left
+      while(right > 0, func(ar[right], ar[left]))//call the function, while right is greater than left
         {
      	  mySwap(ar[right], ar[left]); //swap
 	  right--; //decrement right side
